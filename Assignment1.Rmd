@@ -1,0 +1,151 @@
+---
+title: "Assignment 1- Jiahui Wu"
+author: "Hubert"
+date: "2017/10/7"
+output: pdf_document
+---
+## Question a
+### Data set 1
+```{r}
+file1<-"http://www.math.mcgill.ca/yyang/regression/data/a1-1.txt"
+data1<-read.table(file1,header=TRUE)
+x1<-data1$x
+y1<-data1$y
+fit.RP1<-lm(y1~x1)
+resids1<-residuals(fit.RP1)
+summary(fit.RP1)
+coef(fit.RP1)
+```
+So we have the equation: **y = `r round(coef(fit.RP1)[1],3)` + `r round(coef(fit.RP1)[2],3)` x **.
+```{r}
+plot(x1,y1,pch=18,xlab='x',ylab='y')
+abline(coef(fit.RP1),col='red')
+plot(x1,resids1,pch=4,ylim=c(-6,6),xlab='x',ylab='residuals')
+abline(h=0)
+```
+<br>The amount of data is not very sufficient. However, the distribution of residuals is pretty even,except for 2 outlier points. Together with the results of t test and f test, we can conclude that our model is acceptable. 
+
+### Data set 2
+```{r}
+file2<-"http://www.math.mcgill.ca/yyang/regression/data/a1-2.txt"
+data2<-read.table(file2,header=TRUE)
+x2<-data2$x
+y2<-data2$y
+fit.RP2<-lm(y2~x2)
+resids2<-residuals(fit.RP2)
+summary(fit.RP2)
+coef(fit.RP2)
+```
+So we have the equation: **y = `r round(coef(fit.RP2)[1],3)` + `r round(coef(fit.RP2)[2],3)` x **.
+```{r}
+plot(x2,y2,pch=18,xlab='x',ylab='y')
+abline(coef(fit.RP2),col='red')
+plot(x2,resids2,pch=4,ylim=c(-170,170),xlab='x',ylab='residuals')
+abline(h=0)
+```
+<br>In this data set, we have sufficient data for a linear regression.The distribution of residuals is pretty even, and all the results of t test and f test are perfect. Therefore we can conclude that our model is excellent.
+
+### Data set 3
+```{r}
+file3<-"http://www.math.mcgill.ca/yyang/regression/data/a1-3.txt"
+data3<-read.table(file3,header=TRUE)
+x3<-data3$x
+y3<-data3$y
+fit.RP3<-lm(y3~x3)
+resids3<-residuals(fit.RP3)
+summary(fit.RP3)
+coef(fit.RP3)
+```
+So we have the equation: **y = `r round(coef(fit.RP3)[1],3)` + `r round(coef(fit.RP3)[2],3)` x **.
+```{r}
+plot(x3,y3,pch=18,xlab='x',ylab='y')
+abline(coef(fit.RP3),col='red')
+plot(x3,resids3,pch=4,ylim=c(-7,7),xlab='x',ylab='residuals')
+abline(h=0)
+```
+<br>The amount of data is not very sufficient. the distribution of residuals is not even, also, all the results of t test and f test are larger than 0.01, which means our model is not appropriate. It's apparent that there are a few outliers, but the proportion of outliers is not low, so we shouldn't simply remove those outlier data points.
+
+## Question b
+We assume that $E[y{_{i}}|x{_{i1}}]={\beta}{_{0}}+{\beta}{_{1}}x{_{i1}}$ ; $Var[y{_{i}}|x{_{i1}}]=\sigma^{2}$ and all $y{_{i}}$s are independent.
+
+### if the predictor is subjected to a location shift
+Location shift: $x{_{i1}}^{new}=x{_{i1}}-m$
+$$y{_{i1}} = \hat{\beta}{_{0}}^{new} +\hat{\beta}{_{1}}^{new} x{_{i1}}^{new} + e{_{i}}=\hat{\beta}{_{0}} +\hat{\beta}{_{1}}X{_{i1}}+ e{_{i}}$$
+$$\hat{\beta}{_{0}}^{new}+\hat{\beta}{_{1}}^{new}x{_{i1}}^{new}=\hat{\beta}{_{0}}+\hat{\beta}{_{1}}x{_{i1}}$$
+$$\hat{\beta}{_{0}}^{new} +\hat{\beta}{_{1}}^{new} x{_{i1}}-m\hat{\beta}{_{1}}^{new}=\hat{\beta}{_{0}} +\hat{\beta}{_{1}}x{_{i1}}$$
+So we have $\hat{\beta}{_{1}}^{new}=\hat{\beta}{_{1}}$ and $\hat{\beta}{_{0}}^{new}=\hat{\beta}{_{0}}+m\hat{\beta}{_{1}}$
+
+$$\begin{bmatrix}\hat{\beta}{_{0}}^{new}\\ \hat{\beta}{_{1}}^{new}\end{bmatrix}=\begin{bmatrix}1&m\\0&1\end{bmatrix}\begin{bmatrix}\hat{\beta}{_{0}}\\ \hat{\beta}{_{1}}\end{bmatrix}$$
+$$\hat{\beta}^{new}=M\hat{\beta} \ \ where \ \ M=\begin{bmatrix}1&m\\0&1\end{bmatrix}$$
+$$E[\hat{\beta}{_{0}}^{new}|X]=\beta{_{0}}^{new}=\beta{_{0}}+m\beta{_{1}}=E[\hat{\beta}{_{0}}|X]+mE[\hat{\beta}{_{1}}|X]$$
+$$E[\hat{\beta}{_{1}}^{new}|X]=\beta{_{1}}^{new}=\beta{_{1}}=E[\hat{\beta}{_{1}}|X]$$
+$$Var[\hat{\beta}|X]=Var[(X^{T}X)^{-1}X^{T}Y|X]=\sigma^{2}(X^{T}X)^{-1}=\frac{\sigma^{2}}{nS{_{xx}}}\begin{bmatrix}\sum X{_{i1}}^{2}&-\sum X{_{i1}}\\-\sum X{_{i1}}&n\end{bmatrix}$$
+
+$$Var[\hat{\beta}{_{0}}|X]=\frac{\sigma^{2}\sum X{_{i1}}^{2}}{nS{_{xx}}}$$
+$$Var[\hat{\beta}{_{1}}|X]=\frac{\sigma^{2}}{S{_{xx}}}$$
+$$Var[\hat{\beta}^{new}|X]=Var[M\hat{\beta}|X]=Var[M(X^{T}X)^{-1}X^{T}Y|X]$$
+Let N denote $M(X^{T}X)^{-1}X^{T}$, then
+$$Var[\hat{\beta}^{new}|X]=Var[NY|X]=NVar[Y|X]N^{T}=\sigma^{2}NN^{T}=\sigma^{2}M(X^{T}X)^{-1}M^{T}=\frac{\sigma^{2}}{nS{_{xx}}}\begin{bmatrix}1&m\\0&1\end{bmatrix}\begin{bmatrix}\sum X{_{i1}}^{2}&-\sum X{_{i1}}\\-\sum X{_{i1}}&n\end{bmatrix}\begin{bmatrix}1&0\\m&1\end{bmatrix}$$
+$$Var[\hat{\beta}{_{0}}^{new}|X]=\frac{\sigma^{2}(\sum X{_{i1}}^{2}-2m\sum X{_{i1}}+m^{2}n)}{nS{_{xx}}}=Var[\hat{\beta}{_{0}}|X]*\frac{\sum X{_{i1}}^{2}-2m\sum X{_{i1}}+m^{2}n}{\sum X{_{i1}}^{2}}$$
+$$Var[\hat{\beta}{_{1}}^{new}|X]=\frac{\sigma^{2}}{S{_{xx}}}=Var[\hat{\beta}{_{1}}|X]$$
+
+### if the predictor is rescaled
+Predictor is rescaled: $x{_{i1}}^{new}=lx{_{i1}}$
+$$y{_{i1}} = \hat{\beta}{_{0}}^{new} +\hat{\beta}{_{1}}^{new} x{_{i1}}^{new} + e{_{i}}=\hat{\beta}{_{0}} +\hat{\beta}{_{1}}X{_{i1}}+ e{_{i}}$$
+$$\hat{\beta}{_{0}}^{new}+\hat{\beta}{_{1}}^{new}lx{_{i1}}=\hat{\beta}{_{0}}+\hat{\beta}{_{1}}x{_{i1}}$$
+So we have $\hat{\beta}{_{1}}^{new}=\hat{\beta}{_{1}}/l$ and $\hat{\beta}{_{0}}^{new}=\hat{\beta}{_{0}}$
+$$\begin{bmatrix}\hat{\beta}{_{0}}^{new}\\ \hat{\beta}{_{1}}^{new}\end{bmatrix}=\begin{bmatrix}1&0\\0&1/l\end{bmatrix}\begin{bmatrix}\hat{\beta}{_{0}}\\ \hat{\beta}{_{1}}\end{bmatrix}$$
+$$\hat{\beta}^{new}=L\hat{\beta}  \ \ where \ \ L=\begin{bmatrix}1&0\\0&1/l\end{bmatrix}$$
+$$E[\hat{\beta}{_{0}}^{new}|X]=\beta{_{0}}^{new}=\beta{_{0}}=E[\hat{\beta}{_{0}}|X]$$
+$$E[\hat{\beta}{_{1}}^{new}|X]=\beta{_{1}}^{new}=\beta{_{1}}/l=E[\hat{\beta}{_{1}}|X]/l$$
+$$Var[\hat{\beta}^{new}|X]=Var[L\hat{\beta}|X]=Var[L(X^{T}X)^{-1}X^{T}Y|X]$$
+Let K denote $L(X^{T}X)^{-1}X^{T}$,then
+$$Var[\hat{\beta}^{new}|X]=Var[KY|X]=KVar[Y|X]K^{T}=\sigma^{2}KK^{T}=\sigma^{2}L(X^{T}X)^{-1}L^{T}=\frac{\sigma^{2}}{nS{_{xx}}}\begin{bmatrix}1&0\\0&1/l\end{bmatrix}\begin{bmatrix}\sum X{_{i1}}^{2}&-\sum X{_{i1}}\\-\sum X{_{i1}}&n\end{bmatrix}\begin{bmatrix}1&0\\0&1/l\end{bmatrix}$$
+$$Var[\hat{\beta}{_{0}}^{new}|X]=\frac{\sigma^{2}\sum X{_{i1}}^{2}}{nS{_{xx}}}=Var[\hat{\beta}{_{0}}|X]$$
+$$Var[\hat{\beta}{_{1}}^{new}|X]=\frac{\sigma^{2}}{l^{2}S{_{xx}}}=Var[\hat{\beta}{_{1}}|X]/l^{2}$$
+
+## EXTRA QUESTION FOR STUDENTS IN MATH 533
+For ridge regression, we need to minimize $S(\beta_{0},\beta_{1})=\sum_{i=1}^{N}[y_{i}-\beta _{0}-\beta _{1}x_{_{i1}}]^{2}+\lambda \beta _{1}^{2}$
+
+$$\frac{\partial S}{\partial \beta_{0}}=0\Rightarrow -\sum_{i=1}^{N}2[y_{i}-\hat{\beta} _{0}-\hat{\beta} _{1}x_{_{i1}}]=0$$  
+
+$$\hat{\beta} _{0}=(\sum_{i=1}^{N}y_{i}-\hat{\beta} _{1}\sum_{i=1}^{N}x_{i1})/N --- equation 1$$
+
+$$\frac{\partial S}{\partial \beta_{1}}=0 \Rightarrow-\sum_{i=1}^{N}2[x_{i1}y_{i}-\hat{\beta} _{0}x_{i1}-\hat{\beta} _{1}x_{_{i1}}^{2}]+2\lambda \hat{\beta} _{1}=0$$
+
+$$\lambda \hat{\beta} _{1}=\sum_{i=1}^{N}x_{i1}y_{i}-\hat{\beta}_{0}\sum_{i=1}^{N}x_{i1}-\hat{\beta}_{1}\sum_{i=1}^{N}x_{i1}^{2}$$
+
+Substituting equation 1, we have $\lambda \hat{\beta} _{1}=\sum_{i=1}^{N}x_{i1}y_{i}-\bar{x}_{1}\sum_{i=1}^{N}y_{i}-\hat{\beta}_{1}\sum_{i=1}^{N}x_{i1}^{2}+\hat{\beta}_{1}\bar{x}_{1}\sum_{i=1}^{N}x_{i1}$ --- equation 2, which need to be solved to calculated$\hat{\beta} _{1}$
+
+For the other regression, we need to minimize $T(\beta_{0}^{c},\beta_{1}^{c})=\sum_{i=1}^{N}[y_{i}-\beta_{0}^{c}-\beta_{1}^{c}(x_{_{i1}}-\bar{x}_{1})]^{2}+\lambda\beta _{1}^{c2}$
+
+$$\frac{\partial S}{\partial \beta_{0}}=0\Rightarrow-\sum_{i=1}^{N}2[y_{i}-\hat{\beta} _{0}^{c}-\hat{\beta} _{1}^{c}(x_{_{i1}}-\bar{x}_{1})]=0$$
+$$\hat{\beta} _{0}^{c}=(\sum_{i=1}^{N}y_{i}-\hat{\beta} _{1}^{c}\sum_{i=1}^{N}(x_{i1}-\bar{x}))/N=\sum_{i=1}^{N}y_{i}/N$$
+
+$$\frac{\partial S}{\partial \beta_{1}}=0\Rightarrow-\sum_{i=1}^{N}2(x_{i1}-\bar{x_{1}})[y_{i}-\hat{\beta} _{0}^{c}-\hat{\beta} _{1}^{c}x_{_{i1}}+\hat{\beta} _{1}^{c}\bar{x}_{_{i1}}]+2\lambda \hat{\beta} _{1}^{c}=0$$
+
+Simplifying this equation we have $\lambda \hat{\beta} _{1}^{c}=\sum_{i=1}^{N}x_{i1}y_{i}-\bar{x}_{1}\sum_{i=1}^{N}y_{i}-\hat{\beta}_{1}^{c}\sum_{i=1}^{N}x_{i1}^{2}+\hat{\beta}_{1}^{c}\bar{x}_{1}\sum_{i=1}^{N}x_{i1}$ which is same as the equation 2. Therefore the outcomes of  should be same $\hat{\beta} _{1}^{c}=\hat{\beta} _{1}$.
+
+
+However the outcomes of $\hat{\beta}_{0}$ are not same. We have $\hat{\beta} _{0}=(\sum_{i=1}^{N}y_{i}-\hat{\beta} _{1}\sum_{i=1}^{N}x_{i1})/N$ and $\hat{\beta} _{0}^{c}=\sum_{i=1}^{N}y_{i}/N=\hat{\beta} _{0}+\hat{\beta} _{1}\bar{x}_{1}$
+
+So we have 
+
+$$\begin{bmatrix}\hat{\beta}{_{0}}^{c}\\ \hat{\beta}{_{1}}^{c}\end{bmatrix}=\begin{bmatrix}1&\bar{x_{1}}\\0&1\end{bmatrix}\begin{bmatrix}\hat{\beta}{_{0}}^{ridge}\\ \hat{\beta}{_{1}}^{ridge}\end{bmatrix}$$
+
+The new fitted line is parallel with the fitted line of ridge regression. Their intercepts differ by $\hat{\beta} _{1}\bar{x}_{1}$.
+
+## EXTRA CREDIT QUESTION FOR ALL STUDENTS
+
+### criterion based on the Euclidean distance
+We need to minimize $U(\beta_{0},\beta_{1})=\sqrt{\sum_{i=1}^{n}[y_{i}-\beta _{0}-\beta _{1}x_{_{i1}}]^{2}}$
+
+Therefore we have these two equations: $\frac{\partial U}{\partial \beta_{0}}=0\Rightarrow -[\sum_{i=1}^{n}(y_{i}-\hat\beta _{0}-\hat\beta _{1}x_{_{i1}})^{2}]^{-1/2}\sum_{i=1}^{n}[y_{i}-\hat{\beta} _{0}-\hat{\beta} _{1}x_{_{i1}}]=0$ and $\frac{\partial U}{\partial \beta_{1}}=0\Rightarrow -[\sum_{i=1}^{n}(y_{i}-\hat\beta _{0}-\hat\beta _{1}x_{_{i1}})^{2}]^{-1/2}\sum_{i=1}^{n}[y_{i}x_{i1}-\hat{\beta} _{0}x_{i1}-\hat{\beta} _{1}x_{_{i1}}^{2}]=0$
+
+However, the term $[\sum_{i=1}^{n}(y_{i}-\hat\beta _{0}-\hat\beta _{1}x_{_{i1}})^{2}]^{-1/2}$is apparently greater than 0. So we have following two equations$\sum_{i=1}^{n}[y_{i}-\hat{\beta} _{0}-\hat{\beta} _{1}x_{_{i1}}]=0$ and $\sum_{i=1}^{n}[y_{i}x_{i1}-\hat{\beta} _{0}x_{i1}-\hat{\beta} _{1}x_{_{i1}}^{2}]=0$ which is same as the equations least squares model could derive.
+
+Therefore, this new model should be same as the least squares model.
+
+### criterion based on the sum of absolute differences
+
+If noise follows the normal distribution, using least absolute deviation model will lead to estimators with different statistical characteristics from least squares model. Compared to least squares model, outliers will have less influence on the estimators in least absolute deviation model. Therefore,if we calculate a $\hat\beta$ to minimize $\sum_{i=1}^{n}[y_{i}-\hat{\beta}x_{_{i}}]$, it's totally possible to make the value $\sum_{i=1}^{n}[y_{i}-\hat\beta x_{_{i}}]^{2}$ much larger than its minimum.
